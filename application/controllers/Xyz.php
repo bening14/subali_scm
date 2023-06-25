@@ -109,7 +109,7 @@ class Xyz extends CI_Controller
             $kategori = 'H';
         }
 
-        $update = $this->crud->update('tbl_reminder', ['status_reminder' => 'CLOSED', 'actual_clock' => $datetime], ['klasifikasi' => $kategori, 'substr(date_created,1,10)' => $today]);
+        $update = $this->crud->update('tbl_reminder', ['status_reminder' => 'CLOSED', 'actual_clock' => $datetime, 'user_punch' => $this->session->userdata("userid")], ['klasifikasi' => $kategori, 'substr(date_created,1,10)' => $today]);
         if ($update > 0) {
             $result = 200;
         } else {
