@@ -34,6 +34,9 @@ class Auth extends CI_Controller
 
     private function _login()
     {
+        date_default_timezone_set('Asia/Jakarta');
+        $today = date('Y-m-d');
+
         $userid = $this->input->post('userid');
         $password = $this->input->post('password');
 
@@ -62,6 +65,50 @@ class Auth extends CI_Controller
                     );
                     //buat session
                     $this->session->set_userdata($data);
+
+                    //insert data ke tbl_reminder
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'A', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'A', 'waktu' => '08:00 sd 08:59 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'B', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'B', 'waktu' => '09:00 sd 09:59 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'C', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'C', 'waktu' => '10:00 sd 10:59 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'D', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'D', 'waktu' => '11:00 sd 11:59 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'E', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'E', 'waktu' => '12:00 sd 12:59 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'F', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'F', 'waktu' => '13:00 sd 13:59 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'G', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'G', 'waktu' => '14:00 sd 14:59 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+                    $this->Crud->get_where('tbl_reminder', ['klasifikasi' => 'H', 'substr(date_created,1,10)' => $today]);
+                    if ($this->db->affected_rows() == false) {
+                        $this->Crud->insert('tbl_reminder', ['klasifikasi' => 'H', 'waktu' => '15:00 sd 16:00 WIB', 'status_reminder' => 'OPEN']);
+                    }
+
+
+
                     // redirect('dashboard');
                     if ($user['role_id'] == '1') {
                         redirect('xyz');
