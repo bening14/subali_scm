@@ -210,6 +210,7 @@ class Prjt extends CI_Controller
     {
         $table = $this->input->post("table");
         $id = $this->input->post("id");
+        $id_project = $this->input->post("id_project");
 
         $config['upload_path']          = "assets/pdf/payment/";
         $config['allowed_types']        = 'pdf|PDF';
@@ -221,6 +222,7 @@ class Prjt extends CI_Controller
         $data = $this->input->post();
         unset($data['table']);
         unset($data['id']);
+        unset($data['id_project']);
         // unset($data['password']);
 
         if (count($_FILES) > 0) {
@@ -234,6 +236,13 @@ class Prjt extends CI_Controller
             $data['payment_file'] = $data_upload['file_name'];
         }
         $data['payment_status'] = 'CLOSED';
+
+        //update balance di tbl_project
+        $a = $this->crud->get_where('tbl_project', ['id' => $id_project])->row_array();
+        $b = $this->crud->get_where('tbl_invoice', ['id' => $id])->row_array();
+        $c = $a['balance'] - $b['amount'];
+        $this->crud->update('tbl_project', ['balance' => $c], ['id' => $id_project]);
+        //end update balance di tbl_project
 
         $update = $this->crud->update($table, $data, ['id' => $id]);
 

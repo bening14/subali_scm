@@ -25,6 +25,7 @@
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">FINANCE</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="<?= base_url('prjt') ?>">Petty Cash</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('prjt/asset') ?>">Asset</a></li>
                 </ul>
             </li>
             <li class="nav-item">

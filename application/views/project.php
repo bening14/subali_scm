@@ -48,7 +48,7 @@
                         <div class="col-6">
                             <h4 class="mt-4">Project</h4>
                             <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item active">Catatan Project, masukan semua project ke dalam sini</li>
+                                <!-- <li class="breadcrumb-item active">Catatan Project, masukan semua project ke dalam sini</li> -->
                             </ol>
 
                         </div>

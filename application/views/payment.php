@@ -173,6 +173,7 @@
                                     <label for="nama_project" class="form-label">Pilih PDF File Bukti Transfer/Bukti Receive</label>
                                     <input id="file_upload_payment" type="file" class="form-control">
                                     <input type="hidden" class="form-control" id="id_upload">
+                                    <input type="hidden" class="form-control" id="id_project_payment">
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
@@ -511,7 +512,7 @@
 
     function uploadpayment(id) {
         $('#id_upload').val(id)
-        $('#kategori_upload').val('payment')
+        $('#id_project_payment').val('<?= $this->uri->segment("3") ?>')
 
         $('#uploadModal').modal('show')
     }
@@ -532,6 +533,7 @@
         var form_data = new FormData();
         form_data.append('table', 'tbl_invoice');
         form_data.append('id', $("#id_upload").val());
+        form_data.append('id_project', $("#id_project_payment").val());
         form_data.append('date_payment', $("#date_payment").val());
         if ($('#file_upload_payment').val() !== "") {
             var file_data = $('#file_upload_payment').prop('files')[0];
