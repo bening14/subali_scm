@@ -48,7 +48,7 @@
                         <div class="col-6">
                             <h4 class="mt-4">Project</h4>
                             <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item active">Catatan Project, masukan semua project ke dalam sini</li>
+                                <!-- <li class="breadcrumb-item active">Catatan Project, masukan semua project ke dalam sini</li> -->
                             </ol>
 
                         </div>
@@ -189,6 +189,35 @@
         </div>
     </div>
 
+    <div class="modal fade" id="uploadModalpajak" tabindex="-1" role="dialog" aria-labelledby="uploadModalpajakLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalpajaklLabel">Upload Data</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="form-data-4">
+                        <div class="row g-3">
+                            <div class="col-xxl-12">
+                                <div>
+                                    <label for="file_upload_bayar" class="form-label">Pilih PDF File Bukti Bayar Pajak</label>
+                                    <input id="file_upload_bayar" type="file" class="form-control">
+                                    <input type="hidden" class="form-control" id="id_upload_bayar">
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-12">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="uploadModalfaktur" tabindex="-1" role="dialog" aria-labelledby="uploadModalfakturLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -252,6 +281,21 @@
                     <h5 class="modal-title" id="fakturModallLabel">Faktur View</h5>
                 </div>
                 <div class="modal-body" id="fakturid">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="fakturModalbayar" tabindex="-1" role="dialog" aria-labelledby="fakturModalbayarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fakturModalbayarlLabel">Bukti Bayar View</h5>
+                </div>
+                <div class="modal-body" id="bayarid">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -343,7 +387,7 @@
                 "className": 'text-center py-1',
                 "data": "data",
                 "render": function(data) {
-                    return data.invoice_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showinvoice('` + data.invoice_file + `')"><i class="fa fa-file-pdf"></i> Lihat</button>`
+                    return data.invoice_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showinvoice('` + data.invoice_file + `')"><i class="fa fa-file-pdf"></i> invoice</button>`
                 }
             }, {
                 "target": [<?= $target ?>],
@@ -358,7 +402,11 @@
                 "className": 'text-center py-1',
                 "data": "data",
                 "render": function(data) {
-                    return data.ppn + `<br><span class="badge rounded-pill bg-primary">NTPN-` + data.ntpn + `</span>`
+                    if (data.bukti_bayar_pajak == '') {
+                        return data.ppn + `<br><span class="badge rounded-pill bg-primary">NTPN-` + data.ntpn + `</span><br class="mb-1"><small style="color: red;font-style: italic;">*Bukti bayar Pajak-File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadbayar('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
+                    } else {
+                        return data.ppn + `<br><span class="badge rounded-pill bg-primary">NTPN-` + data.ntpn + `</span><br class="mb-1"><button type="button" class="btn btn-sm btn-danger" onclick="showbayar('` + data.bukti_bayar_pajak + `')"><i class="fa fa-file-pdf"></i> Bukti Bayar</button>`
+                    }
                 }
             }, {
                 "target": [<?= $target ?>],
@@ -368,7 +416,7 @@
                     if (data.ppn_file == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadppn('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return data.faktur_pajak + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showfaktur('` + data.ppn_file + `')"><i class="fa fa-file-pdf"></i> Lihat</button>`
+                        return data.faktur_pajak + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showfaktur('` + data.ppn_file + `')"><i class="fa fa-file-pdf"></i> Faktur</button>`
                     }
                 }
             }, {
@@ -379,7 +427,7 @@
                     if (data.payment_file == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadpayment('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showpayment('` + data.payment_file + `')"><i class="fa fa-file-pdf"></i> Lihat</button>`
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showpayment('` + data.payment_file + `')"><i class="fa fa-file-pdf"></i> Payment</button>`
                     }
                 }
             }, ],
@@ -422,6 +470,12 @@
         $('#fakturModal').modal('show')
         var html = '<embed type="application/pdf" src="<?= base_url() ?>assets/pdf/faktur_pajak/' + faktur + '" width="700" height="400"></embed>'
         $('#fakturid').html(html)
+    }
+
+    function showbayar(bayar) {
+        $('#fakturModalbayar').modal('show')
+        var html = '<embed type="application/pdf" src="<?= base_url() ?>assets/pdf/billing_ppn/' + bayar + '" width="700" height="400"></embed>'
+        $('#bayarid').html(html)
     }
 
     function showpayment(payment) {
@@ -515,6 +569,12 @@
         $('#id_project_payment').val('<?= $this->uri->segment("3") ?>')
 
         $('#uploadModal').modal('show')
+    }
+
+    function uploadbayar(id) {
+        $('#id_upload_bayar').val(id)
+
+        $('#uploadModalpajak').modal('show')
     }
 
     $("#form-data-2").submit(function(e) {
@@ -623,8 +683,60 @@
                         'success'
                     )
                     $('#uploadModalfaktur').modal('hide');
-                    $('#dokumen').val('')
+                    $('#ntpn').val('')
+                    $('#faktur_pajak').val('')
                     $('#file_upload').val('')
+
+                    reload_table()
+
+                } else {
+                    Swal.fire(
+                        'error!',
+                        result.message,
+                        'error'
+                    )
+                }
+            },
+            error: function(err) {
+                Swal.fire(
+                    'error!',
+                    err.responseText,
+                    'error'
+                )
+            }
+        })
+    })
+
+    $("#form-data-4").submit(function(e) {
+        e.preventDefault()
+
+        var form_data = new FormData();
+        form_data.append('table', 'tbl_invoice');
+        form_data.append('id', $("#id_upload_bayar").val());
+        if ($('#file_upload_bayar').val() !== "") {
+            var file_data = $('#file_upload_bayar').prop('files')[0];
+            form_data.append('file', file_data);
+        }
+
+        var url_ajax = '<?= base_url() ?>prjt/update_file_bayar'
+
+        $.ajax({
+            url: url_ajax,
+            type: "post",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            dataType: "json",
+            success: function(result) {
+                if (result.status == "success") {
+                    Swal.fire(
+                        'Success!',
+                        result.message,
+                        'success'
+                    )
+                    $('#uploadModalpajak').modal('hide');
+                    $('#file_upload_bayar').val('')
 
                     reload_table()
 

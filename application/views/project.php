@@ -364,7 +364,7 @@
                     if (data.brd_number == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadbrd('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return data.brd_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showbrd('` + data.brd_file + `')"><i class="fa fa-file-pdf"></i> Lihat</button>`
+                        return data.brd_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showbrd('` + data.brd_file + `')"><i class="fa fa-file-pdf"></i> BRD</button>`
                     }
                 }
             }, {
@@ -375,7 +375,7 @@
                     if (data.quotation_number == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadquotation('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return data.quotation_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showquotation('` + data.quotation_file + `')"><i class="fa fa-file-pdf"></i> Lihat</button>`
+                        return data.quotation_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showquotation('` + data.quotation_file + `')"><i class="fa fa-file-pdf"></i> Quotation</button>`
                     }
                 }
             }, {
@@ -386,7 +386,7 @@
                     if (data.kontrak_kerja_number == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadkontrak('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return data.kontrak_kerja_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showkontrak('` + data.kontrak_kerja_file + `')"><i class="fa fa-file-pdf"></i> Lihat</button>`
+                        return data.kontrak_kerja_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showkontrak('` + data.kontrak_kerja_file + `')"><i class="fa fa-file-pdf"></i> Kontrak</button>`
                     }
                 }
             }, {
@@ -397,7 +397,7 @@
                     if (data.bastp_number == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadbastp('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return data.bastp_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showbastp('` + data.bastp_file + `')"><i class="fa fa-file-pdf"></i> Lihat</button>`
+                        return data.bastp_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showbastp('` + data.bastp_file + `')"><i class="fa fa-file-pdf"></i> BASTP</button>`
                     }
                 }
             }, {
@@ -427,7 +427,7 @@
                         <a href="<?= base_url('prjt/payment/') ?>` + data.id + `" type="button" class="btn btn-sm btn-success"><i class="fa fa-money-bill"></i> Payment</a>`
                     } else {
                         return `<button type="button" class="btn btn-sm btn-danger" onclick="delete_data('` + data.id + `')"><i class="fa fa-trash"></i> </button>
-                        <a href="<?= base_url('prjt/payment/') ?>` + data.id + `" type="button" class="btn btn-sm btn-success"><i class="fa fa-money-bill"></i> Payment</a>
+                
                         `
                     }
 

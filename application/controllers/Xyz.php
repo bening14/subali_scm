@@ -16,8 +16,9 @@ class Xyz extends CI_Controller
 
     public function index()
     {
+        $data['menu'] = 'customer';
 
-        $this->load->view('reminder');
+        $this->load->view('reminder', $data);
     }
 
     public function ajax_table_chat()
@@ -120,15 +121,16 @@ class Xyz extends CI_Controller
 
     public function customer()
     {
-        $this->load->view('customer');
+        $data['menu'] = 'customer';
+        $this->load->view('customer', $data);
     }
 
     public function ajax_table_customer()
     {
         $table = 'mst_klien';
-        $column_order = array('id', 'nama_klien', 'kategori', 'alamat', 'contact', 'hp_contact', 'tipe', 'date_created'); //field yang ada di table user
-        $column_search = array('id', 'nama_klien', 'kategori', 'alamat', 'contact', 'hp_contact', 'tipe', 'date_created'); //field yang diizin untuk pencarian 
-        $select = 'id, nama_klien, kategori, alamat, contact, hp_contact, tipe, date_created';
+        $column_order = array('id', 'nama_klien', 'kategori', 'alamat', 'contact', 'hp_contact', 'date_created'); //field yang ada di table user
+        $column_search = array('id', 'nama_klien', 'kategori', 'alamat', 'contact', 'hp_contact', 'date_created'); //field yang diizin untuk pencarian 
+        $select = 'id, nama_klien, kategori, alamat, contact, hp_contact, date_created';
         $order = array('id' => 'asc'); // default order 
         $list = $this->crud->get_datatables($table, $select, $column_order, $column_search, $order);
         $data = array();
@@ -143,7 +145,6 @@ class Xyz extends CI_Controller
             $row['data']['alamat'] = $key->alamat;
             $row['data']['contact'] = $key->contact;
             $row['data']['hp_contact'] = $key->hp_contact;
-            $row['data']['tipe'] = $key->tipe;
             $row['data']['date_created'] = date('d-M-Y', strtotime($key->date_created));
 
             $data[] = $row;
@@ -199,6 +200,18 @@ class Xyz extends CI_Controller
             'id' => $id
         );
         $result = $this->crud->get_where('mst_klien', $where)->row_array();
+
+        echo json_encode($result);
+    }
+
+    public function getproject()
+    {
+        $id = $this->input->post('id');
+
+        $where = array(
+            'id_klien' => $id
+        );
+        $result = $this->crud->get_where('tbl_project', $where)->result_array();
 
         echo json_encode($result);
     }

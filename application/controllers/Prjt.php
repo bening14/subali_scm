@@ -17,13 +17,14 @@ class Prjt extends CI_Controller
     public function index()
     {
         $data['klien'] = $this->crud->get_all('mst_klien')->result_array();
+        $data['menu'] = 'project';
         $this->load->view('project', $data);
     }
 
     public function payment()
     {
-        // $data['klien'] = $this->crud->get_all('mst_klien')->result_array();
-        $this->load->view('payment');
+        $data['menu'] = 'project';
+        $this->load->view('payment', $data);
     }
 
     public function ajax_table_project()
@@ -254,6 +255,44 @@ class Prjt extends CI_Controller
         echo json_encode($response);
     }
 
+    public function update_file_bayar()
+    {
+        $table = $this->input->post("table");
+        $id = $this->input->post("id");
+
+        $config['upload_path']          = "assets/pdf/billing_ppn/";
+        $config['allowed_types']        = 'pdf|PDF';
+        $config['max_size']             = 10024;
+        $config['max_width']            = 5000;
+        $config['max_height']           = 5000;
+
+        $this->load->library('upload', $config);
+        $data = $this->input->post();
+        unset($data['table']);
+        unset($data['id']);
+        // unset($data['password']);
+
+        if (count($_FILES) > 0) {
+            if (!$this->upload->do_upload('file')) {
+                $response = array('status' => 'failed', 'message' => $this->upload->display_errors());
+                echo json_encode($response);
+                die;
+            }
+            $data_upload = $this->upload->data();
+
+            $data['bukti_bayar_pajak'] = $data_upload['file_name'];
+        }
+
+        $update = $this->crud->update($table, $data, ['id' => $id]);
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
+    }
+
     public function delete_data()
     {
         $table = $this->input->post('table');
@@ -286,9 +325,9 @@ class Prjt extends CI_Controller
         );
 
         $table = 'tbl_invoice'; //nama tabel dari database
-        $column_order = array('id', 'id_project', 'nama_project', 'id_klien', 'nama_klien', 'invoice_number', 'amount', 'invoice_file', 'ntpn', 'ppn', 'ppn_file', 'faktur_pajak', 'remark', 'payment_status', 'payment_file', 'date_payment', 'date_created'); //field yang ada di table user
-        $column_search = array('id', 'id_project', 'nama_project', 'id_klien', 'nama_klien', 'invoice_number', 'amount', 'invoice_file', 'ntpn', 'ppn', 'ppn_file', 'faktur_pajak', 'remark', 'payment_status', 'payment_file', 'date_payment', 'date_created'); //field yang diizin untuk pencarian 
-        $select = 'id, id_project, nama_project, id_klien, nama_klien, invoice_number, amount, invoice_file, ntpn, ppn, ppn_file, faktur_pajak, remark, payment_status, payment_file, date_payment, date_created';
+        $column_order = array('id', 'id_project', 'nama_project', 'id_klien', 'nama_klien', 'invoice_number', 'amount', 'invoice_file', 'ntpn', 'ppn', 'ppn_file', 'bukti_bayar_pajak', 'faktur_pajak', 'remark', 'payment_status', 'payment_file', 'date_payment', 'date_created'); //field yang ada di table user
+        $column_search = array('id', 'id_project', 'nama_project', 'id_klien', 'nama_klien', 'invoice_number', 'amount', 'invoice_file', 'ntpn', 'ppn', 'ppn_file', 'bukti_bayar_pajak', 'faktur_pajak', 'remark', 'payment_status', 'payment_file', 'date_payment', 'date_created'); //field yang diizin untuk pencarian 
+        $select = 'id, id_project, nama_project, id_klien, nama_klien, invoice_number, amount, invoice_file, ntpn, ppn, ppn_file, bukti_bayar_pajak, faktur_pajak, remark, payment_status, payment_file, date_payment, date_created';
         $order = array('id' => 'asc'); // default order 
         $list = $this->crud->get_datatables($table, $select, $column_order, $column_search, $order, $where);
         $data = array();
@@ -308,6 +347,7 @@ class Prjt extends CI_Controller
             $row['data']['ntpn'] = $key->ntpn;
             $row['data']['ppn'] = "Rp " . number_format($key->ppn, 2, ',', '.');
             $row['data']['ppn_file'] = $key->ppn_file;
+            $row['data']['bukti_bayar_pajak'] = $key->bukti_bayar_pajak;
             $row['data']['faktur_pajak'] = $key->faktur_pajak;
             $row['data']['remark'] = $key->remark;
             $row['data']['payment_status'] = $key->payment_status;

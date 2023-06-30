@@ -71,7 +71,6 @@
                                         <th>Contact</th>
                                         <th>HP Contact</th>
                                         <th>Register Date</th>
-                                        <th>Tipe</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -200,6 +199,33 @@
         </div>
     </div>
 
+    <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectModallLabel">Project Klien</h5>
+                </div>
+                <div class="modal-body" id="klienproject">
+                    <!-- <table id="table-klien-project" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Klien</th>
+                                <th>Project</th>
+                                <th>Man Days</th>
+                                <th>Amount</th>
+                                <th>Register Date</th>
+                            </tr>
+                        </thead>
+                    </table> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="<?= base_url('assets/') ?>js/scripts.js"></script>
@@ -276,37 +302,47 @@
                 "className": 'text-center py-1',
                 "data": "data",
                 "render": function(data) {
-                    if (data.tipe == 'LEADS') {
-                        return `<span class="badge bg-danger">LEADS</span>`
-                    } else if (data.tipe == 'QUOTATION') {
-                        return `<span class="badge bg-secondary">QUOTATION</span>`
-                    } else if (data.tipe == 'DEVELOPMENT') {
-                        return `<span class="badge bg-primary">DEVELOPMENT</span>`
-                    } else if (data.tipe == 'CLOSED') {
-                        return `<span class="badge bg-success">CLOSED</span>`
-                    } else if (data.tipe == 'LOST') {
-                        return `<span class="badge bg-warning">LOST</span>`
-                    }
-                }
-            }, {
-                "target": [<?= $target ?>],
-                "className": 'text-center py-1',
-                "data": "data",
-                "render": function(data) {
                     return `<button type="button" class="btn btn-sm btn-danger" onclick="delete_data('` + data.id + `')"><i class="fa fa-trash"></i> Hapus</button>
                     <button type="button" class="btn btn-sm btn-primary" onclick="edit_data('` + data.id + `')"><i class="fa fa-edit"></i> Edit</button>
-                    <button type="button" class="btn btn-sm btn-success"><i class="fa fa-project-diagram"></i> Project</button>`
+                    <button type="button" class="btn btn-sm btn-success" onclick="project_data('` + data.id + `')"><i class="fa fa-project-diagram"></i> Project</button>`
                 }
             }, ],
             "dom": '<"row" <"col-md-6" l><"col-md-6" f>>rt<"row" <"col-md-6" i><"col-md-6" p>>',
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         });
-
-
     });
 
     function reload_table() {
         $('#table-customer').DataTable().ajax.reload(null, false);
+    }
+
+    function project_data(id) {
+        $('#projectModal').modal('show')
+        var tabel = `<table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%"><thead><tr><th>#</th><th>Klien</th><th>Project</th><th>Man Days</th><th>Amount</th><th>Register Date</th></tr></thead>`
+        var body = `<tbody>`
+        var body2 = `</tbody>`
+        var end = `</table>`
+        var html = ''
+        var no = 1
+        $.ajax({
+            url: '<?= base_url() ?>xyz/getproject',
+            type: "post",
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function(result) {
+                result.forEach(d => {
+                    html = html + `<tr><td>` + no + `</td><td>` + d.nama_klien + `</td><td>` + d.nama_project + `</td><td>` + d.jumlah_md + `</td><td>` + new Intl.NumberFormat().format(d.amount) + `</td><td>` + d.date_created + `</td></tr>`
+                    no++
+                });
+
+                $('#klienproject').html(tabel + html + body + body2 + end)
+            },
+            error: function(err) {
+                console.log(err.responseText)
+            }
+        })
     }
 
     $("#form-data").submit(function(e) {
