@@ -17,7 +17,7 @@ class Xyz extends CI_Controller
     public function index()
     {
 
-        $this->load->view('dashboard');
+        $this->load->view('reminder');
     }
 
     public function ajax_table_chat()
@@ -116,5 +116,113 @@ class Xyz extends CI_Controller
             $result = 400;
         }
         echo json_encode($result);
+    }
+
+    public function customer()
+    {
+        $this->load->view('customer');
+    }
+
+    public function ajax_table_customer()
+    {
+        $table = 'mst_klien';
+        $column_order = array('id', 'nama_klien', 'kategori', 'alamat', 'contact', 'hp_contact', 'tipe', 'date_created'); //field yang ada di table user
+        $column_search = array('id', 'nama_klien', 'kategori', 'alamat', 'contact', 'hp_contact', 'tipe', 'date_created'); //field yang diizin untuk pencarian 
+        $select = 'id, nama_klien, kategori, alamat, contact, hp_contact, tipe, date_created';
+        $order = array('id' => 'asc'); // default order 
+        $list = $this->crud->get_datatables($table, $select, $column_order, $column_search, $order);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $key) {
+            $no++;
+            $row = array();
+            $row['data']['no'] = $no;
+            $row['data']['id'] = $key->id;
+            $row['data']['nama_klien'] = $key->nama_klien;
+            $row['data']['kategori'] = $key->kategori;
+            $row['data']['alamat'] = $key->alamat;
+            $row['data']['contact'] = $key->contact;
+            $row['data']['hp_contact'] = $key->hp_contact;
+            $row['data']['tipe'] = $key->tipe;
+            $row['data']['date_created'] = date('d-M-Y', strtotime($key->date_created));
+
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->crud->count_all($table),
+            "recordsFiltered" => $this->crud->count_filtered($table, $select, $column_order, $column_search, $order),
+            "data" => $data,
+            "query" => $this->db->last_query()
+        );
+        //output to json format
+        echo json_encode($output);
+    }
+
+    public function insert_data_customer()
+    {
+
+        $table = $this->input->post("table");
+
+        $data = $this->input->post();
+        unset($data['table']);
+        $data['tipe'] = 'LEADS';
+
+        $insert_data = $this->crud->insert($table, $data);
+
+
+        if ($insert_data > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Tambah Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Tambah Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function delete_data()
+    {
+        $table = $this->input->post('table');
+        if ($this->crud->delete($table, ['id' => $this->input->post('id')])) {
+            $response = ['status' => 'success', 'message' => 'Success Delete Data!'];
+        } else
+            $response = ['status' => 'failed', 'message' => 'Error Delete Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function getcustomer()
+    {
+        $id = $this->input->post('id');
+
+        $where = array(
+            'id' => $id
+        );
+        $result = $this->crud->get_where('mst_klien', $where)->row_array();
+
+        echo json_encode($result);
+    }
+
+    public function update_data_customer()
+    {
+        $table = $this->input->post("table");
+        $data = $this->input->post();
+
+        $where = array(
+            'id' => $data['id']
+        );
+
+        unset($data['table']);
+        unset($data['id']);
+
+
+        $update = $this->crud->update($table, $data, $where);
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
     }
 }

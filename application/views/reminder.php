@@ -100,28 +100,7 @@
     </nav>
 
     <div class="pt-5">
-        <div class="container-fluid px-4 mt-3">
-            <ul class="nav nav-pills">
-                <li class="nav-item dropdown">
-                    <a class="nav-link active dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Customer</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Chat Tokopedia & WA</a></li>
-                        <li><a class="dropdown-item" href="#">List Customer</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Project</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">List Project</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url('auth/logout') ?>">Logout</a>
-                </li>
-            </ul>
-
-
-        </div>
+        <?php include('menu_header.php') ?>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
@@ -180,18 +159,6 @@
                     </div>
                 </div>
             </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; SCM 2023</div>
-                        <!-- <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div> -->
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
