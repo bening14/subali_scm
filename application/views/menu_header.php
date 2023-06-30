@@ -16,12 +16,12 @@
                 </ul>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">HR</a>
+                <a class="nav-link <?= $menu == 'hr' ? 'active' : '' ?> dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">HR</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/karyawan') ?>">Karyawan</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/absensi') ?>">Absensi</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/overtime') ?>">Overtime</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/payroll') ?>">Payroll</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('hr') ?>">Karyawan</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('hr/absensi') ?>">Absensi</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('hr/overtime') ?>">Overtime</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('hr/payroll') ?>">Payroll</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
