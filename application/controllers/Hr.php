@@ -70,6 +70,128 @@ class Hr extends CI_Controller
         echo json_encode($output);
     }
 
+    public function update_setting_gambar()
+    {
+        $table = $this->input->post("table");
+        $id = $this->input->post("id");
+
+        $config['upload_path']          = "assets/image/karyawan/";
+        $config['allowed_types']        = 'jpg|png|jpeg|JPG|PNG|JPEG';
+        $config['max_size']             = 5024;
+        $config['max_width']            = 5000;
+        $config['max_height']           = 5000;
+
+        $this->load->library('upload', $config);
+        $data = $this->input->post();
+        unset($data['table']);
+        unset($data['id']);
+
+        if (count($_FILES) > 0) {
+            if (!$this->upload->do_upload('file')) {
+                $response = array('status' => 'failed', 'message' => $this->upload->display_errors());
+                echo json_encode($response);
+                die;
+            }
+            $data_upload = $this->upload->data();
+
+            $data['photo'] = $data_upload['file_name'];
+        }
+
+        $update = $this->crud->update($table, $data, ['id' => $id]);
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!', 'photo' => $data_upload['file_name']];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function delete_data()
+    {
+        $table = $this->input->post('table');
+        if ($this->crud->delete($table, ['id' => $this->input->post('id')])) {
+            $response = ['status' => 'success', 'message' => 'Success Delete Data!'];
+        } else
+            $response = ['status' => 'failed', 'message' => 'Error Delete Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function update_data_karyawan()
+    {
+        $table = $this->input->post("table");
+        $id = $this->input->post("id");
+        $data = $this->input->post();
+
+        $where = array(
+            'id' => $id
+        );
+
+        unset($data['table']);
+        unset($data['id']);
+
+
+        $update = $this->crud->update($table, $data, $where);
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function insert_data_karyawan()
+    {
+        $table = $this->input->post("table");
+
+        $config['upload_path']          = "assets/image/karyawan/";
+        $config['allowed_types']        = 'jpg|png|jpeg|JPG|PNG|JPEG';
+        $config['max_size']             = 5024;
+        $config['max_width']            = 5000;
+        $config['max_height']           = 5000;
+
+        $this->load->library('upload', $config);
+        $data = $this->input->post();
+        unset($data['table']);
+
+        if (count($_FILES) > 0) {
+            if (!$this->upload->do_upload('file')) {
+                $response = array('status' => 'failed', 'message' => $this->upload->display_errors());
+                echo json_encode($response);
+                die;
+            }
+            $data_upload = $this->upload->data();
+
+            $data['photo'] = $data_upload['file_name'];
+        }
+
+        $data['role_id'] = '5';
+        $data['is_active'] = '1';
+        $data['password'] = password_hash('12345', PASSWORD_DEFAULT);
+
+        $insert = $this->crud->insert($table, $data);
+
+        if ($insert > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Tambah Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Tambah Data!'];
+
+        echo json_encode($response);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public function cek_reminder()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -170,36 +292,9 @@ class Hr extends CI_Controller
         echo json_encode($output);
     }
 
-    public function insert_data_customer()
-    {
-
-        $table = $this->input->post("table");
-
-        $data = $this->input->post();
-        unset($data['table']);
-        $data['tipe'] = 'LEADS';
-
-        $insert_data = $this->crud->insert($table, $data);
 
 
-        if ($insert_data > 0) {
-            $response = ['status' => 'success', 'message' => 'Berhasil Tambah Data!'];
-        } else
-            $response = ['status' => 'error', 'message' => 'Gagal Tambah Data!'];
 
-        echo json_encode($response);
-    }
-
-    public function delete_data()
-    {
-        $table = $this->input->post('table');
-        if ($this->crud->delete($table, ['id' => $this->input->post('id')])) {
-            $response = ['status' => 'success', 'message' => 'Success Delete Data!'];
-        } else
-            $response = ['status' => 'failed', 'message' => 'Error Delete Data!'];
-
-        echo json_encode($response);
-    }
 
     public function getcustomer()
     {

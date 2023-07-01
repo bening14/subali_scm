@@ -85,7 +85,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalCustomerLabel">Tambah Customer</h5>
+                    <h5 class="modal-title" id="modalCustomerLabel">Tambah Karyawan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -93,22 +93,29 @@
                         <div class="row g-3">
                             <div class="col-xxl-6">
                                 <div>
-                                    <label for="nama_klien" class="form-label">Nama Klien</label>
-                                    <input type="text" class="form-control" id="nama_klien">
+                                    <label for="name" class="form-label">Nama Karyawan</label>
+                                    <input type="text" class="form-control" id="name">
                                 </div>
                             </div><!--end col-->
                             <div class="col-xxl-6">
                                 <div>
-                                    <label for="alamat" class="form-label">Kategori</label>
-                                    <select name="kategori" id="kategori" class="form-control">
-                                        <option value="Badan Usaha">Badan Usaha</option>
-                                        <option value="Yayasan">Yayasan</option>
-                                        <option value="Perorangan">Perorangan</option>
-                                        <option value="Lainnya">Lainnya</option>
-                                    </select>
+                                    <label for="nik" class="form-label">Nomor Induk Karyawan</label>
+                                    <input type="text" class="form-control" id="nik">
                                 </div>
                             </div><!--end col-->
-                            <div class="col-xxl-12">
+                            <div class="col-xxl-6">
+                                <div>
+                                    <label for="jabatan" class="form-label">Jabatan</label>
+                                    <input type="text" class="form-control" id="jabatan" onkeyup="this.value = this.value.toUpperCase();">
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-xxl-6">
+                                <div>
+                                    <label for="userid" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="userid">
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-xxl-6">
                                 <div>
                                     <label for="alamat" class="form-label">Alamat</label>
                                     <input type="text" class="form-control" id="alamat">
@@ -116,73 +123,23 @@
                             </div><!--end col-->
                             <div class="col-xxl-6">
                                 <div>
-                                    <label for="contact" class="form-label">Contact Person</label>
-                                    <input type="text" class="form-control" id="contact">
+                                    <label for="phone" class="form-label">Handphone</label>
+                                    <input type="text" class="form-control" id="phone">
                                 </div>
                             </div><!--end col-->
                             <div class="col-xxl-6">
                                 <div>
-                                    <label for="hp_contact" class="form-label">HP Contact Person</label>
-                                    <input type="text" class="form-control" id="hp_contact">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-lg-12">
-                                <div class="hstack gap-2 justify-content-end">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="editCustomer" tabindex="-1" aria-labelledby="editCustomerLabel" aria-modal="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCustomerLabel">Edit Customer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-data-2">
-                        <div class="row g-3">
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="nama_klien_edit" class="form-label">Nama Klien</label>
-                                    <input type="text" class="form-control" id="nama_klien_edit">
-                                    <input type="hidden" class="form-control" id="id_edit">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="kategori_edit" class="form-label">Kategori</label>
-                                    <select name="kategori_edit" id="kategori_edit" class="form-control">
-                                        <option value="Badan Usaha">Badan Usaha</option>
-                                        <option value="Yayasan">Yayasan</option>
-                                        <option value="Perorangan">Perorangan</option>
-                                        <option value="Lainnya">Lainnya</option>
+                                    <label for="phone" class="form-label">Jenis Kelamin</label>
+                                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                                        <option value="LAKI-LAKI">LAKI-LAKI</option>
+                                        <option value="PEREMPUAN">PEREMPUAN</option>
                                     </select>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-xxl-12">
-                                <div>
-                                    <label for="alamat_edit" class="form-label">Alamat</label>
-                                    <input type="text" class="form-control" id="alamat_edit">
-                                </div>
-                            </div><!--end col-->
                             <div class="col-xxl-6">
                                 <div>
-                                    <label for="contact_edit" class="form-label">Contact Person</label>
-                                    <input type="text" class="form-control" id="contact_edit">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="hp_contact_edit" class="form-label">HP Contact Person</label>
-                                    <input type="text" class="form-control" id="hp_contact_edit">
+                                    <label for="photo" class="form-label">Photo</label>
+                                    <input type="file" class="form-control" id="photo">
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
@@ -198,32 +155,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="projectModallLabel">Project Klien</h5>
-                </div>
-                <div class="modal-body" id="klienproject">
-                    <!-- <table id="table-klien-project" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Klien</th>
-                                <th>Project</th>
-                                <th>Man Days</th>
-                                <th>Amount</th>
-                                <th>Register Date</th>
-                            </tr>
-                        </thead>
-                    </table> -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -277,7 +211,7 @@
                 "className": 'text-left py-1',
                 "data": "data",
                 "render": function(data) {
-                    return ` <img src="<?= base_url('assets/image/karyawan/') ?>` + data.photo + `" class="rounded" alt="karyawan" style="margin-right: 10px;">` +
+                    return ` <img src="<?= base_url('assets/image/karyawan/') ?>` + data.photo + `" class="rounded" alt="karyawan" style="margin-right: 10px;width: 128px;">` +
                         data.name
                 }
             }, {
@@ -316,43 +250,15 @@
     });
 
     function reload_table() {
-        $('#table-customer').DataTable().ajax.reload(null, false);
+        $('#table-karyawan').DataTable().ajax.reload(null, false);
     }
 
-    function project_data(id) {
-        $('#projectModal').modal('show')
-        var tabel = `<table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%"><thead><tr><th>#</th><th>Klien</th><th>Project</th><th>Man Days</th><th>Amount</th><th>Register Date</th></tr></thead>`
-        var body = `<tbody>`
-        var body2 = `</tbody>`
-        var end = `</table>`
-        var html = ''
-        var no = 1
-        $.ajax({
-            url: '<?= base_url() ?>xyz/getproject',
-            type: "post",
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function(result) {
-                result.forEach(d => {
-                    html = html + `<tr><td>` + no + `</td><td>` + d.nama_klien + `</td><td>` + d.nama_project + `</td><td>` + d.jumlah_md + `</td><td>` + new Intl.NumberFormat().format(d.amount) + `</td><td>` + d.date_created + `</td></tr>`
-                    no++
-                });
 
-                $('#klienproject').html(tabel + html + body + body2 + end)
-            },
-            error: function(err) {
-                console.log(err.responseText)
-            }
-        })
-    }
 
     $("#form-data").submit(function(e) {
-        // alert('OK')
         e.preventDefault()
 
-        if ($('#nama_klien').val() == '' || $('#kategori').val() == '' || $('#alamat').val() == '' || $('#contact').val() == '' || $('#hp_contact').val() == '') {
+        if ($('#name').val() == '' || $('#nik').val() == '' || $('#jabatan').val() == '' || $('#userid').val() == '' || $('#alamat').val() == '' || $('#phone').val() == '' || $('#jenis_kelamin').val() == '') {
             Swal.fire(
                 'error!',
                 'Tidak boleh ada kolom kosong!',
@@ -361,17 +267,21 @@
             return
         }
 
-
         var form_data = new FormData();
-        form_data.append('table', 'mst_klien');
-        form_data.append('nama_klien', $("#nama_klien").val());
-        form_data.append('kategori', $("#kategori").val());
+        form_data.append('table', 'user');
+        form_data.append('name', $("#name").val());
+        form_data.append('nik', $("#nik").val());
+        form_data.append('jabatan', $("#jabatan").val());
+        form_data.append('userid', $("#userid").val());
         form_data.append('alamat', $("#alamat").val());
-        form_data.append('contact', $("#contact").val());
-        form_data.append('hp_contact', $("#hp_contact").val());
+        form_data.append('phone', $("#phone").val());
+        form_data.append('jenis_kelamin', $("#jenis_kelamin").val());
+        if ($('#photo').val() !== "") {
+            var file_data = $('#photo').prop('files')[0];
+            form_data.append('file', file_data);
+        }
 
-        var url_ajax = '<?= base_url() ?>xyz/insert_data_customer'
-
+        var url_ajax = '<?= base_url() ?>hr/insert_data_karyawan'
 
         $.ajax({
             url: url_ajax,
@@ -388,13 +298,16 @@
                         result.message,
                         'success'
                     )
-                    $('#nama_klien').val('')
-                    $('#kategori').val('')
-                    $('#alamat').val('')
-                    $('#contact').val('')
-                    $('#hp_contact').val('')
                     $('#modalCustomer').modal('hide');
+                    $('#name').val('')
+                    $('#nik').val('')
+                    $('#jabatan').val('')
+                    $('#userid').val('')
+                    $('#alamat').val('')
+                    $('#phone').val('')
+
                     reload_table()
+
                 } else {
                     Swal.fire(
                         'error!',
@@ -426,10 +339,10 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '<?= base_url() ?>xyz/delete_data',
+                    url: '<?= base_url() ?>hr/delete_data',
                     data: {
                         id: id,
-                        table: "mst_klien"
+                        table: "user"
                     },
                     type: 'post',
                     dataType: 'json',
@@ -448,88 +361,4 @@
             }
         })
     }
-
-    function edit_data(id) {
-        $('#editCustomer').modal('show')
-        $('#id_edit').val(id)
-
-        $.ajax({
-            url: '<?= base_url() ?>xyz/getcustomer',
-            type: "post",
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function(result) {
-                $('#nama_klien_edit').val(result.nama_klien)
-                $('#kategori_edit').val(result.kategori)
-                $('#alamat_edit').val(result.alamat)
-                $('#contact_edit').val(result.contact)
-                $('#hp_contact_edit').val(result.hp_contact)
-            },
-            error: function(err) {
-                console.log(err.responseText)
-            }
-        })
-    }
-
-    $("#form-data-2").submit(function(e) {
-        // alert('OK')
-        e.preventDefault()
-
-        if ($('#nama_klien_edit').val() == '' || $('#kategori_edit').val() == '' || $('#alamat_edit').val() == '' || $('#contact_edit').val() == '' || $('#hp_contact_edit').val() == '') {
-            Swal.fire(
-                'error!',
-                'Tidak boleh ada kolom kosong!',
-                'error'
-            )
-            return
-        }
-
-
-        var form_data = new FormData();
-        form_data.append('table', 'mst_klien');
-        form_data.append('id', $("#id_edit").val());
-        form_data.append('nama_klien', $("#nama_klien_edit").val());
-        form_data.append('kategori', $("#kategori_edit").val());
-        form_data.append('alamat', $("#alamat_edit").val());
-        form_data.append('contact', $("#contact_edit").val());
-        form_data.append('hp_contact', $("#hp_contact_edit").val());
-
-        var url_ajax = '<?= base_url() ?>xyz/update_data_customer'
-
-        $.ajax({
-            url: url_ajax,
-            type: "post",
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_data,
-            dataType: "json",
-            success: function(result) {
-                if (result.status == "success") {
-                    Swal.fire(
-                        'Success!',
-                        result.message,
-                        'success'
-                    )
-                    $('#editCustomer').modal('hide');
-                    reload_table()
-                } else {
-                    Swal.fire(
-                        'error!',
-                        result.message,
-                        'error'
-                    )
-                }
-            },
-            error: function(err) {
-                Swal.fire(
-                    'error!',
-                    err.responseText,
-                    'error'
-                )
-            }
-        })
-    })
 </script>

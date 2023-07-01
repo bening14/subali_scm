@@ -28,6 +28,12 @@
     <!-- Sweet alert init js-->
     <script src="<?= base_url('assets/js/pages/sweetalerts.init.js') ?>"></script>
 
+    <style>
+        .image_upload>input {
+            display: none;
+        }
+    </style>
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -58,7 +64,13 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 text-center"> <img src="<?= base_url('assets/image/karyawan/' . $karyawan['photo']) ?>" class="rounded" alt="karyawan">
+                                <div class="col-12 text-center"> <img id="photouser" src="<?= base_url('assets/image/karyawan/' . $karyawan['photo']) ?>" class="rounded" alt="karyawan" style="width: 128px;">
+                                    <p class="image_upload mt-3">
+                                        <label for="userImage">
+                                            <a class="btn btn-warning btn-sm"><i class="fa fa-camera"></i> Ubah Photo</a>
+                                        </label>
+                                        <input type="file" name="userImage" id="userImage">
+                                    </p>
                                     <h5 class="mt-3"><?= $karyawan['name'] ?></h5>
                                     <h6>NIK. <?= $karyawan['nik'] ?></h6>
                                 </div>
@@ -69,7 +81,7 @@
                                         <label for="jabatan" class="col-sm-2 col-form-label">Jabatan</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="jabatan" value="<?= $karyawan['jabatan'] ?>">
-                                            <input type="text" class="form-control" id="id" value="<?= $karyawan['id'] ?>">
+                                            <input type="hidden" class="form-control" id="id" value="<?= $karyawan['id'] ?>">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -105,13 +117,23 @@
                                     <div class="row mb-3">
                                         <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="tanggal_lahir" value="<?= $karyawan['tanggal_lahir'] ?>">
+                                            <input type="date" class="form-control" id="tanggal_lahir" value="<?= $karyawan['tanggal_lahir'] ?>">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="jenis_kelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="jenis_kelamin" value="<?= $karyawan['jenis_kelamin'] ?>">
+                                            <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                                                <?php
+                                                if ($karyawan['jenis_kelamin'] == 'LAKI-LAKI') {
+                                                    echo '<option value="LAKI-LAKI">LAKI-LAKI</option>
+                                                            <option value="PEREMPUAN">PEREMPUAN</option>';
+                                                } else {
+                                                    echo '<option value="PEREMPUAN">PEREMPUAN</option>
+                                                        <option value="LAKI-LAKI">LAKI-LAKI</option>';
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -123,7 +145,23 @@
                                     <div class="row mb-3">
                                         <label for="status_kawin" class="col-sm-2 col-form-label">Status Kawin</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="status_kawin" value="<?= $karyawan['status_kawin'] ?>">
+                                            <select name="status_kawin" id="status_kawin" class="form-control">
+                                                <?php
+                                                if ($karyawan['status_kawin'] == 'KAWIN') {
+                                                    echo '<option value="KAWIN">KAWIN</option>
+                                                            <option value="BELUM KAWIN">BELUM KAWIN</option>
+                                                            <option value="JANDA/DUDA">JANDA/DUDA</option>';
+                                                } elseif ($karyawan['status_kawin'] == 'BELUM KAWIN') {
+                                                    echo '<option value="BELUM KAWIN">BELUM KAWIN</option>
+                                                        <option value="KAWIN">KAWIN</option>
+                                                        <option value="JANDA/DUDA">JANDA/DUDA</option>';
+                                                } else {
+                                                    echo '<option value="JANDA/DUDA">JANDA/DUDA</option>
+                                                    <option value="KAWIN">KAWIN</option>
+                                                    <option value="BELUM KAWIN">BELUM KAWIN</option>';
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -162,18 +200,7 @@
                                             <input type="text" class="form-control" id="npwp" value="<?= $karyawan['npwp'] ?>">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <label for="bpjs_kesehatan" class="col-sm-2 col-form-label">Akun BPJS Kesehatan</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="bpjs_kesehatan" value="<?= $karyawan['bpjs_kesehatan'] ?>">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="bpjs_ketenagakerjaan" class="col-sm-2 col-form-label">Akun BPJS Ketenagakerjaan</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="bpjs_ketenagakerjaan" value="<?= $karyawan['bpjs_ketenagakerjaan'] ?>">
-                                        </div>
-                                    </div>
+
                                     <div class="row mb-3">
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-10" style="margin-top: 20px;">
@@ -192,149 +219,11 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalCustomer" tabindex="-1" aria-labelledby="modalCustomerLabel" aria-modal="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalCustomerLabel">Tambah Customer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-data">
-                        <div class="row g-3">
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="nama_klien" class="form-label">Nama Klien</label>
-                                    <input type="text" class="form-control" id="nama_klien">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="alamat" class="form-label">Kategori</label>
-                                    <select name="kategori" id="kategori" class="form-control">
-                                        <option value="Badan Usaha">Badan Usaha</option>
-                                        <option value="Yayasan">Yayasan</option>
-                                        <option value="Perorangan">Perorangan</option>
-                                        <option value="Lainnya">Lainnya</option>
-                                    </select>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-12">
-                                <div>
-                                    <label for="alamat" class="form-label">Alamat</label>
-                                    <input type="text" class="form-control" id="alamat">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="contact" class="form-label">Contact Person</label>
-                                    <input type="text" class="form-control" id="contact">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="hp_contact" class="form-label">HP Contact Person</label>
-                                    <input type="text" class="form-control" id="hp_contact">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-lg-12">
-                                <div class="hstack gap-2 justify-content-end">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal fade" id="editCustomer" tabindex="-1" aria-labelledby="editCustomerLabel" aria-modal="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCustomerLabel">Edit Customer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-data-2">
-                        <div class="row g-3">
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="nama_klien_edit" class="form-label">Nama Klien</label>
-                                    <input type="text" class="form-control" id="nama_klien_edit">
-                                    <input type="hidden" class="form-control" id="id_edit">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="kategori_edit" class="form-label">Kategori</label>
-                                    <select name="kategori_edit" id="kategori_edit" class="form-control">
-                                        <option value="Badan Usaha">Badan Usaha</option>
-                                        <option value="Yayasan">Yayasan</option>
-                                        <option value="Perorangan">Perorangan</option>
-                                        <option value="Lainnya">Lainnya</option>
-                                    </select>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-12">
-                                <div>
-                                    <label for="alamat_edit" class="form-label">Alamat</label>
-                                    <input type="text" class="form-control" id="alamat_edit">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="contact_edit" class="form-label">Contact Person</label>
-                                    <input type="text" class="form-control" id="contact_edit">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xxl-6">
-                                <div>
-                                    <label for="hp_contact_edit" class="form-label">HP Contact Person</label>
-                                    <input type="text" class="form-control" id="hp_contact_edit">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-lg-12">
-                                <div class="hstack gap-2 justify-content-end">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="projectModallLabel">Project Klien</h5>
-                </div>
-                <div class="modal-body" id="klienproject">
-                    <!-- <table id="table-klien-project" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Klien</th>
-                                <th>Project</th>
-                                <th>Man Days</th>
-                                <th>Amount</th>
-                                <th>Register Date</th>
-                            </tr>
-                        </thead>
-                    </table> -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -427,61 +316,36 @@
     });
 
     function reload_table() {
-        $('#table-customer').DataTable().ajax.reload(null, false);
+        $('#table-karyawan').DataTable().ajax.reload(null, false);
     }
 
-    function project_data(id) {
-        $('#projectModal').modal('show')
-        var tabel = `<table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%"><thead><tr><th>#</th><th>Klien</th><th>Project</th><th>Man Days</th><th>Amount</th><th>Register Date</th></tr></thead>`
-        var body = `<tbody>`
-        var body2 = `</tbody>`
-        var end = `</table>`
-        var html = ''
-        var no = 1
-        $.ajax({
-            url: '<?= base_url() ?>xyz/getproject',
-            type: "post",
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function(result) {
-                result.forEach(d => {
-                    html = html + `<tr><td>` + no + `</td><td>` + d.nama_klien + `</td><td>` + d.nama_project + `</td><td>` + d.jumlah_md + `</td><td>` + new Intl.NumberFormat().format(d.amount) + `</td><td>` + d.date_created + `</td></tr>`
-                    no++
-                });
 
-                $('#klienproject').html(tabel + html + body + body2 + end)
-            },
-            error: function(err) {
-                console.log(err.responseText)
-            }
-        })
-    }
 
     $("#form-data").submit(function(e) {
         // alert('OK')
         e.preventDefault()
 
-        if ($('#nama_klien').val() == '' || $('#kategori').val() == '' || $('#alamat').val() == '' || $('#contact').val() == '' || $('#hp_contact').val() == '') {
-            Swal.fire(
-                'error!',
-                'Tidak boleh ada kolom kosong!',
-                'error'
-            )
-            return
-        }
-
 
         var form_data = new FormData();
-        form_data.append('table', 'mst_klien');
-        form_data.append('nama_klien', $("#nama_klien").val());
-        form_data.append('kategori', $("#kategori").val());
+        form_data.append('table', 'user');
+        form_data.append('id', $("#id").val());
+        form_data.append('jabatan', $("#jabatan").val());
         form_data.append('alamat', $("#alamat").val());
-        form_data.append('contact', $("#contact").val());
-        form_data.append('hp_contact', $("#hp_contact").val());
+        form_data.append('phone', $("#phone").val());
+        form_data.append('no_ktp', $("#no_ktp").val());
+        form_data.append('tempat_lahir', $("#tempat_lahir").val());
+        form_data.append('tanggal_lahir', $("#tanggal_lahir").val());
+        form_data.append('jenis_kelamin', $("#jenis_kelamin").val());
+        form_data.append('agama', $("#agama").val());
+        form_data.append('status_kawin', $("#status_kawin").val());
+        form_data.append('orang_dekat', $("#orang_dekat").val());
+        form_data.append('hubungan_orang_dekat', $("#hubungan_orang_dekat").val());
+        form_data.append('hp_orang_dekat', $("#hp_orang_dekat").val());
+        form_data.append('bank', $("#bank").val());
+        form_data.append('rekening', $("#rekening").val());
+        form_data.append('npwp', $("#npwp").val());
 
-        var url_ajax = '<?= base_url() ?>xyz/insert_data_customer'
+        var url_ajax = '<?= base_url() ?>hr/update_data_karyawan'
 
 
         $.ajax({
@@ -499,13 +363,6 @@
                         result.message,
                         'success'
                     )
-                    $('#nama_klien').val('')
-                    $('#kategori').val('')
-                    $('#alamat').val('')
-                    $('#contact').val('')
-                    $('#hp_contact').val('')
-                    $('#modalCustomer').modal('hide');
-                    reload_table()
                 } else {
                     Swal.fire(
                         'error!',
@@ -524,90 +381,18 @@
         })
     })
 
-    function delete_data(id) {
-
-        Swal.fire({
-            title: 'Apakah Anda Yakin ?',
-            text: "Data yang dihapus tidak bisa dikembalikan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus saja!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '<?= base_url() ?>xyz/delete_data',
-                    data: {
-                        id: id,
-                        table: "mst_klien"
-                    },
-                    type: 'post',
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.status == "success") {
-                            Swal.fire(
-                                'Deleted!',
-                                'Data berhasil di hapus.',
-                                'success'
-                            )
-                            reload_table()
-                        } else
-                            toast('error', result.message)
-                    }
-                })
-            }
-        })
-    }
-
-    function edit_data(id) {
-        $('#editCustomer').modal('show')
-        $('#id_edit').val(id)
-
-        $.ajax({
-            url: '<?= base_url() ?>xyz/getcustomer',
-            type: "post",
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function(result) {
-                $('#nama_klien_edit').val(result.nama_klien)
-                $('#kategori_edit').val(result.kategori)
-                $('#alamat_edit').val(result.alamat)
-                $('#contact_edit').val(result.contact)
-                $('#hp_contact_edit').val(result.hp_contact)
-            },
-            error: function(err) {
-                console.log(err.responseText)
-            }
-        })
-    }
-
-    $("#form-data-2").submit(function(e) {
-        // alert('OK')
-        e.preventDefault()
-
-        if ($('#nama_klien_edit').val() == '' || $('#kategori_edit').val() == '' || $('#alamat_edit').val() == '' || $('#contact_edit').val() == '' || $('#hp_contact_edit').val() == '') {
-            Swal.fire(
-                'error!',
-                'Tidak boleh ada kolom kosong!',
-                'error'
-            )
-            return
+    $('#userImage').on('change', function() {
+        var form_data = new FormData();
+        form_data.append('table', 'user');
+        form_data.append('id', $('#id').val());
+        if ($('#userImage').val() !== "") {
+            var file_data = $('#userImage').prop('files')[0];
+            form_data.append('file', file_data);
         }
 
 
-        var form_data = new FormData();
-        form_data.append('table', 'mst_klien');
-        form_data.append('id', $("#id_edit").val());
-        form_data.append('nama_klien', $("#nama_klien_edit").val());
-        form_data.append('kategori', $("#kategori_edit").val());
-        form_data.append('alamat', $("#alamat_edit").val());
-        form_data.append('contact', $("#contact_edit").val());
-        form_data.append('hp_contact', $("#hp_contact_edit").val());
+        url_ajax = '<?= base_url() ?>hr/update_setting_gambar'
 
-        var url_ajax = '<?= base_url() ?>xyz/update_data_customer'
 
         $.ajax({
             url: url_ajax,
@@ -619,13 +404,7 @@
             dataType: "json",
             success: function(result) {
                 if (result.status == "success") {
-                    Swal.fire(
-                        'Success!',
-                        result.message,
-                        'success'
-                    )
-                    $('#editCustomer').modal('hide');
-                    reload_table()
+                    $('#photouser').attr('src', `<?= base_url('assets/image/karyawan/') ?>` + result.photo)
                 } else {
                     Swal.fire(
                         'error!',
