@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Hr extends CI_Controller
+class Fa extends CI_Controller
 {
     public function __construct()
     {
@@ -16,39 +16,20 @@ class Hr extends CI_Controller
 
     public function index()
     {
-        $data['menu'] = 'hr';
+        $data['menu'] = 'finance';
 
-        $this->load->view('karyawan', $data);
+        $this->load->view('petty', $data);
     }
 
-    public function karyawan()
+    public function ajax_table_petty()
     {
-        $data['menu'] = 'hr';
-        $data['karyawan'] = $this->crud->get_where('user', ['id' => $this->uri->segment("3")])->row_array();
 
-        $this->load->view('karyawan_detil', $data);
-    }
-
-    public function absensi()
-    {
-        $data['menu'] = 'hr';
-        $data['tanggal'] = $this->konversi->hariIndo(date('l, d-F-Y'));
-
-        $this->load->view('absensi', $data);
-    }
-
-    public function ajax_table_karyawan()
-    {
-        $where = array(
-            'jabatan !=' => 'DIREKSI'
-        );
-
-        $table = 'user'; //nama tabel dari database
-        $column_order = array('id', 'name', 'nik', 'jabatan', 'userid', 'alamat', 'photo', 'phone'); //field yang ada di table user
-        $column_search = array('id', 'name', 'nik', 'jabatan', 'userid', 'alamat', 'photo', 'phone'); //field yang diizin untuk pencarian 
-        $select = 'id, name, nik, jabatan, alamat, userid, photo, phone';
+        $table = 'tbl_petty_cash'; //nama tabel dari database
+        $column_order = array('id', 'subjek', 'amount', 'req_person', 'status_approval', 'reason', 'file_bayar', 'bukti_kwitansi', 'date_created'); //field yang ada di table user
+        $column_search = array('id', 'subjek', 'amount', 'req_person', 'status_approval', 'reason', 'file_bayar', 'bukti_kwitansi', 'date_created'); //field yang diizin untuk pencarian 
+        $select = 'id, subjek, amount, req_person, status_approval, reason, file_bayar, bukti_kwitansi, date_created';
         $order = array('id' => 'asc'); // default order 
-        $list = $this->crud->get_datatables($table, $select, $column_order, $column_search, $order, $where);
+        $list = $this->crud->get_datatables($table, $select, $column_order, $column_search, $order);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $key) {
@@ -56,13 +37,14 @@ class Hr extends CI_Controller
             $row = array();
             $row['data']['no'] = $no;
             $row['data']['id'] = $key->id;
-            $row['data']['name'] = $key->name;
-            $row['data']['nik'] = $key->nik;
-            $row['data']['jabatan'] = $key->jabatan;
-            $row['data']['userid'] = $key->userid;
-            $row['data']['alamat'] = $key->alamat;
-            $row['data']['photo'] = $key->photo;
-            $row['data']['phone'] = $key->phone;
+            $row['data']['subjek'] = $key->subjek;
+            $row['data']['amount'] = "Rp " . number_format($key->amount, 2, ',', '.');
+            $row['data']['req_person'] = $key->req_person;
+            $row['data']['status_approval'] = $key->status_approval;
+            $row['data']['reason'] = $key->reason;
+            $row['data']['file_bayar'] = $key->file_bayar;
+            $row['data']['bukti_kwitansi'] = $key->bukti_kwitansi;
+            $row['data']['date_created'] = date('d-M-Y H:i:s', strtotime($key->date_created));
 
             $data[] = $row;
         }
@@ -70,13 +52,156 @@ class Hr extends CI_Controller
         $output = array(
             "draw" => $_POST['draw'],
             "recordsTotal" => $this->crud->count_all($table),
-            "recordsFiltered" => $this->crud->count_filtered($table, $select, $column_order, $column_search, $order, $where),
+            "recordsFiltered" => $this->crud->count_filtered($table, $select, $column_order, $column_search, $order),
             "data" => $data,
             "query" => $this->db->last_query()
         );
         //output to json format
         echo json_encode($output);
     }
+
+    public function delete_data()
+    {
+        $table = $this->input->post('table');
+        if ($this->crud->delete($table, ['id' => $this->input->post('id')])) {
+            $response = ['status' => 'success', 'message' => 'Success Delete Data!'];
+        } else
+            $response = ['status' => 'failed', 'message' => 'Error Delete Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function update_file_bayar()
+    {
+        $table = $this->input->post("table");
+        $id = $this->input->post("id");
+
+        $config['upload_path']          = "assets/pdf/petty_transfer/";
+        $config['allowed_types']        = 'pdf|PDF';
+        $config['max_size']             = 10024;
+        $config['max_width']            = 5000;
+        $config['max_height']           = 5000;
+
+        $this->load->library('upload', $config);
+        $data = $this->input->post();
+        unset($data['table']);
+        unset($data['id']);
+        // unset($data['password']);
+
+        if (count($_FILES) > 0) {
+            if (!$this->upload->do_upload('file')) {
+                $response = array('status' => 'failed', 'message' => $this->upload->display_errors());
+                echo json_encode($response);
+                die;
+            }
+            $data_upload = $this->upload->data();
+
+            $data['file_bayar'] = $data_upload['file_name'];
+        }
+
+        $update = $this->crud->update($table, $data, ['id' => $id]);
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function update_file_kwitansi()
+    {
+        $table = $this->input->post("table");
+        $id = $this->input->post("id");
+
+        $config['upload_path']          = "assets/pdf/petty_kwitansi/";
+        $config['allowed_types']        = 'pdf|PDF';
+        $config['max_size']             = 10024;
+        $config['max_width']            = 5000;
+        $config['max_height']           = 5000;
+
+        $this->load->library('upload', $config);
+        $data = $this->input->post();
+        unset($data['table']);
+        unset($data['id']);
+        // unset($data['password']);
+
+        if (count($_FILES) > 0) {
+            if (!$this->upload->do_upload('file')) {
+                $response = array('status' => 'failed', 'message' => $this->upload->display_errors());
+                echo json_encode($response);
+                die;
+            }
+            $data_upload = $this->upload->data();
+
+            $data['bukti_kwitansi'] = $data_upload['file_name'];
+        }
+
+        $update = $this->crud->update($table, $data, ['id' => $id]);
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function insert_data_petty()
+    {
+
+        $table = $this->input->post("table");
+        $data = $this->input->post();
+
+        $data['req_person'] = $this->session->userdata('userid');
+
+
+        unset($data['table']);
+
+        $insert_data = $this->crud->insert($table, $data);
+
+
+        if ($insert_data > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Tambah Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Tambah Data!'];
+
+        echo json_encode($response);
+    }
+
+    public function reason_aproval()
+    {
+        $table = $this->input->post("table");
+        $id = $this->input->post("id");
+        $data = $this->input->post();
+
+        $where = array(
+            'id' => $id
+        );
+
+        unset($data['table']);
+        unset($data['id']);
+
+        $update = $this->crud->update($table, $data, $where);
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public function update_setting_gambar()
     {
@@ -115,16 +240,7 @@ class Hr extends CI_Controller
         echo json_encode($response);
     }
 
-    public function delete_data()
-    {
-        $table = $this->input->post('table');
-        if ($this->crud->delete($table, ['id' => $this->input->post('id')])) {
-            $response = ['status' => 'success', 'message' => 'Success Delete Data!'];
-        } else
-            $response = ['status' => 'failed', 'message' => 'Error Delete Data!'];
 
-        echo json_encode($response);
-    }
 
     public function update_data_karyawan()
     {

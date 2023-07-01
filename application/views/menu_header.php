@@ -25,11 +25,11 @@
                 </ul>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">FINANCE</a>
+                <a class="nav-link <?= $menu == 'finance' ? 'active' : '' ?> dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">FINANCE</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/petty') ?>">Petty Cash</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/asset') ?>">Asset</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/ppn') ?>">SPT Masa PPN</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('fa') ?>">Petty Cash</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('fa/asset') ?>">Asset</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('fa/ppn') ?>">SPT Masa PPN</a></li>
                 </ul>
             </li>
             <li class="nav-item">

@@ -8,6 +8,12 @@ class Crud extends CI_Model
         return $this->db->get_where($table, $where);
     }
 
+    public function insert_clock_w_camera(string $table, array $data)
+    {
+        $this->db->insert($table, $data);
+        return $this->db->insert_id();
+    }
+
     public function get_where_select($table, $select, $where)
     {
         $this->db->select($select);
