@@ -168,7 +168,7 @@ class Xyz extends CI_Controller
 
         $data = $this->input->post();
         unset($data['table']);
-        $data['tipe'] = 'LEADS';
+        // $data['tipe'] = 'LEADS';
 
         $insert_data = $this->crud->insert($table, $data);
 
