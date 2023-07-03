@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="<?= base_url('assets/image/tech.png') ?>">
     <title>404 Error - SCM PORTAL</title>
     <link href="<?= base_url('assets/') ?>css/styles.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
@@ -36,12 +38,12 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
-                        <div>
+                        <div class="text-muted">Copyright &copy; SCM 2023</div>
+                        <!-- <div>
                             <a href="#">Privacy Policy</a>
                             &middot;
                             <a href="#">Terms &amp; Conditions</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </footer>

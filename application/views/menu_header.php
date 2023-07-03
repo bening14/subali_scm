@@ -12,24 +12,26 @@
                 <a class="nav-link <?= $menu == 'project' ? 'active' : '' ?> dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">PROJECT</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="<?= base_url('prjt') ?>">List Project</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/kpi') ?>">Key Performance</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('prjt/maintenance') ?>">Maintenance Kontrak</a></li>
+                    <!-- <li><a class="dropdown-item" href="<?= base_url('prjt/kpi') ?>">Key Performance</a></li> -->
                 </ul>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link <?= $menu == 'hr' ? 'active' : '' ?> dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">HR</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="<?= base_url('hr') ?>">Karyawan</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('hr/absensi') ?>">Absensi</a></li>
+                    <!-- <li><a class="dropdown-item" href="<?= base_url('hr/absensi') ?>">Absensi</a></li>
                     <li><a class="dropdown-item" href="<?= base_url('hr/overtime') ?>">Overtime</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('hr/payroll') ?>">Payroll</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('hr/payroll') ?>">Payroll</a></li> -->
                 </ul>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link <?= $menu == 'finance' ? 'active' : '' ?> dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">FINANCE</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="<?= base_url('fa') ?>">Petty Cash</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('fa/pemasukan') ?>">Pemasukan Lain</a></li>
                     <li><a class="dropdown-item" href="<?= base_url('fa/asset') ?>">Asset</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('fa/ppn') ?>">SPT Masa PPN</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('fa/spt') ?>">SPT Masa PPN</a></li>
                 </ul>
             </li>
             <li class="nav-item">
