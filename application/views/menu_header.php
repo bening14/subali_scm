@@ -12,7 +12,7 @@
                 <a class="nav-link <?= $menu == 'project' ? 'active' : '' ?> dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">PROJECT</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="<?= base_url('prjt') ?>">List Project</a></li>
-                    <li><a class="dropdown-item" href="<?= base_url('prjt/maintenance') ?>">Maintenance Kontrak</a></li>
+                    <!-- <li><a class="dropdown-item" href="<?= base_url('prjt/maintenance') ?>">Maintenance Kontrak</a></li> -->
                     <!-- <li><a class="dropdown-item" href="<?= base_url('prjt/kpi') ?>">Key Performance</a></li> -->
                 </ul>
             </li>

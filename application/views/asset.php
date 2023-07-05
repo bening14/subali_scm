@@ -225,7 +225,7 @@
                 "className": 'text-center py-1',
                 "data": "data",
                 "render": function(data) {
-                    return ` <img src="<?= base_url('assets/image/asset_scm/') ?>` + data.photo + `" class="rounded" alt="karyawan" style="margin-right: 10px;width: 128px;">`
+                    return ` <img src="<?= base_url('assets/image/asset_scm/') ?>` + data.photo + `" class="rounded" alt="asset" style="margin-right: 10px;width: 128px;">`
                 }
             }, {
                 "target": [<?= $target ?>],
