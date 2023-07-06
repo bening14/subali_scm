@@ -418,4 +418,48 @@ class Prjt extends CI_Controller
 
         echo json_encode($response);
     }
+
+    function reset_data()
+    {
+        $id = $this->input->post('id');
+        $jenis = $this->input->post('jenis');
+
+        if ($jenis == 'brd') {
+            $data = array(
+                'brd_number' => '',
+                'brd_file' => ''
+            );
+        } elseif ($jenis == 'quotation') {
+            $data = array(
+                'quotation_number' => '',
+                'quotation_file' => ''
+            );
+        } elseif ($jenis == 'kontrak') {
+            $data = array(
+                'kontrak_kerja_number' => '',
+                'kontrak_kerja_file' => ''
+            );
+        } elseif ($jenis == 'bastp') {
+            $data = array(
+                'bastp_number' => '',
+                'bastp_file' => ''
+            );
+        }
+
+        $where = array(
+            'id' => $id
+        );
+
+        // echo $jenis;
+        // die;
+
+        $update_data = $this->crud->update('tbl_project', $data, $where);
+
+        if ($update_data) {
+            $response = ['status' => 'success', 'message' => 'Success Delete Data!'];
+        } else
+            $response = ['status' => 'failed', 'message' => 'Error Delete Data!'];
+
+        echo json_encode($response);
+    }
 }
