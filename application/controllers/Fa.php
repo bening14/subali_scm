@@ -555,4 +555,49 @@ class Fa extends CI_Controller
 
         echo json_encode($response);
     }
+
+    function reset_data()
+    {
+        $id = $this->input->post('id');
+        $jenis = $this->input->post('jenis');
+        $table = $this->input->post('table');
+
+        if ($jenis == 'bukti') {
+            $data = array(
+                'bukti_penerimaan' => ''
+            );
+        } elseif ($jenis == 'spt') {
+            $data = array(
+                'spt' => ''
+            );
+        } elseif ($jenis == 'transfer') {
+            $data = array(
+                'file_bayar' => ''
+            );
+        } elseif ($jenis == 'kwitansi') {
+            $data = array(
+                'bukti_kwitansi' => ''
+            );
+        } elseif ($jenis == 'pemasukan') {
+            $data = array(
+                'bukti_transaksi' => ''
+            );
+        }
+
+        $where = array(
+            'id' => $id
+        );
+
+        // echo $jenis;
+        // die;
+
+        $update_data = $this->crud->update($table, $data, $where);
+
+        if ($update_data) {
+            $response = ['status' => 'success', 'message' => 'Success Delete Data!'];
+        } else
+            $response = ['status' => 'failed', 'message' => 'Error Delete Data!'];
+
+        echo json_encode($response);
+    }
 }

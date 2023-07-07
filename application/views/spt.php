@@ -271,7 +271,7 @@
                     if (data.bukti_penerimaan == '') {
                         return `<small style="color: red;font-style: italic;">*Bukti Penerimaan Elektronik-File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadbukti('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showbukti('` + data.bukti_penerimaan + `')"><i class="fa fa-file-pdf"></i> Bukti Penerimaan Elektronik</button>`
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showbukti('` + data.bukti_penerimaan + `')"><i class="fa fa-file-pdf"></i> Bukti Penerimaan Elektronik</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','bukti')"><i class="fa fa-sync-alt"></i></button>`
                     }
                 }
             }, {
@@ -282,7 +282,7 @@
                     if (data.spt == '') {
                         return `<small style="color: red;font-style: italic;">*SPT Masa PPN-File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadspt('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showspt('` + data.spt + `')"><i class="fa fa-file-pdf"></i> SPT Masa PPN</button>`
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showspt('` + data.spt + `')"><i class="fa fa-file-pdf"></i> SPT Masa PPN</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','spt')"><i class="fa fa-sync-alt"></i></button>`
                     }
                 }
             }, {
@@ -325,6 +325,43 @@
         $('#id_upload_bukti').val(id)
 
         $('#uploadbukti').modal('show')
+    }
+
+    function resetfile(id, jenis) {
+        // alert(id, jenis)
+        Swal.fire({
+            title: 'Apakah Anda Yakin ?',
+            text: "Anda akan menghapus file, silahkan upload ulang!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus saja!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url() ?>fa/reset_data',
+                    data: {
+                        id: id,
+                        jenis: jenis,
+                        table: "tbl_spt_masa_ppn"
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == "success") {
+                            Swal.fire(
+                                'Deleted!',
+                                'Data berhasil di hapus.',
+                                'success'
+                            )
+                            reload_table()
+                        } else
+                            toast('error', result.message)
+                    }
+                })
+            }
+        })
     }
 
 

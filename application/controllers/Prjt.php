@@ -293,6 +293,55 @@ class Prjt extends CI_Controller
         echo json_encode($response);
     }
 
+    public function update_file_invoice()
+    {
+        $table = $this->input->post("table");
+        $id = $this->input->post("id");
+
+        // echo $id;
+        // die;
+
+        $config['upload_path']          = "assets/pdf/invoice/";
+        $config['allowed_types']        = 'pdf|PDF';
+        $config['max_size']             = 10024;
+        $config['max_width']            = 5000;
+        $config['max_height']           = 5000;
+
+        $this->load->library('upload', $config);
+        $data = $this->input->post();
+        unset($data['table']);
+        unset($data['id']);
+        // unset($data['password']);
+
+        if (count($_FILES) > 0) {
+            if (!$this->upload->do_upload('file')) {
+                $response = array('status' => 'failed', 'message' => $this->upload->display_errors());
+                echo json_encode($response);
+                die;
+            }
+            $data_upload = $this->upload->data();
+
+            $data['invoice_file'] = $data_upload['file_name'];
+        }
+
+        // echo '<pre>';
+        // var_dump($data);
+        // echo '</pre>';
+        // die;
+
+        $update = $this->crud->update($table, $data, ['id' => $id]);
+
+        // echo $this->db->last_query();
+        // die;
+
+        if ($update > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Edit Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Edit Data!'];
+
+        echo json_encode($response);
+    }
+
     public function delete_data()
     {
         $table = $this->input->post('table');
@@ -423,6 +472,7 @@ class Prjt extends CI_Controller
     {
         $id = $this->input->post('id');
         $jenis = $this->input->post('jenis');
+        $table = $this->input->post('table');
 
         if ($jenis == 'brd') {
             $data = array(
@@ -444,6 +494,24 @@ class Prjt extends CI_Controller
                 'bastp_number' => '',
                 'bastp_file' => ''
             );
+        } elseif ($jenis == 'bayar_pajak') {
+            $data = array(
+                'bukti_bayar_pajak' => ''
+            );
+        } elseif ($jenis == 'faktur') {
+            $data = array(
+                'faktur_pajak' => '',
+                'ppn_file' => '',
+                'ntpn' => ''
+            );
+        } elseif ($jenis == 'invoice') {
+            $data = array(
+                'invoice_file' => ''
+            );
+        } elseif ($jenis == 'payment') {
+            $data = array(
+                'payment_file' => ''
+            );
         }
 
         $where = array(
@@ -453,7 +521,7 @@ class Prjt extends CI_Controller
         // echo $jenis;
         // die;
 
-        $update_data = $this->crud->update('tbl_project', $data, $where);
+        $update_data = $this->crud->update($table, $data, $where);
 
         if ($update_data) {
             $response = ['status' => 'success', 'message' => 'Success Delete Data!'];

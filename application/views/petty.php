@@ -325,7 +325,7 @@
                     if (data.file_bayar == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadbayar('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showbayar('` + data.file_bayar + `')"><i class="fa fa-file-pdf"></i> Bukti Transfer</button>`
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showbayar('` + data.file_bayar + `')"><i class="fa fa-file-pdf"></i> Bukti Transfer</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','transfer')"><i class="fa fa-sync-alt"></i></button>`
                     }
                 }
             }, {
@@ -336,7 +336,7 @@
                     if (data.bukti_kwitansi == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadkwitansi('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showkwitansi('` + data.bukti_kwitansi + `')"><i class="fa fa-file-pdf"></i> Kwitansi</button>`
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showkwitansi('` + data.bukti_kwitansi + `')"><i class="fa fa-file-pdf"></i> Kwitansi</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','kwitansi')"><i class="fa fa-sync-alt"></i></button>`
                     }
                 }
             }, {
@@ -387,6 +387,43 @@
         $('#id_upload_kwitansi').val(id)
 
         $('#uploadModalkwitansi').modal('show')
+    }
+
+    function resetfile(id, jenis) {
+        // alert(id, jenis)
+        Swal.fire({
+            title: 'Apakah Anda Yakin ?',
+            text: "Anda akan menghapus file, silahkan upload ulang!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus saja!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url() ?>fa/reset_data',
+                    data: {
+                        id: id,
+                        jenis: jenis,
+                        table: "tbl_petty_cash"
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == "success") {
+                            Swal.fire(
+                                'Deleted!',
+                                'Data berhasil di hapus.',
+                                'success'
+                            )
+                            reload_table()
+                        } else
+                            toast('error', result.message)
+                    }
+                })
+            }
+        })
     }
 
 

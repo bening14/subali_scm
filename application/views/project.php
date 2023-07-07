@@ -79,13 +79,12 @@
                                         <th>#</th>
                                         <th>Nama Project</th>
                                         <th>Klien</th>
-                                        <th>Amount</th>
+                                        <th>Nilai Project</th>
                                         <th>BRD</th>
                                         <th>Quotation</th>
                                         <th>Kontrak</th>
                                         <th>BASTP</th>
                                         <th>Status</th>
-                                        <th>Balance</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -406,17 +405,13 @@
                 "data": "data",
                 "render": function(data) {
                     if (data.status_project == 'OPEN') {
-                        return `<span class="badge bg-danger">OPEN</span>`
+                        return `<strong>` + data.balance + `</strong><br><span class="badge bg-danger">OPEN</span>`
                     } else if (data.status_project == 'CLOSED') {
-                        return `<span class="badge bg-success">CLOSED</span>`
+                        return `<strong>` + data.balance + `</strong><br><span class="badge bg-success">CLOSED</span>`
                     } else if (data.status_project == 'LEADS') {
-                        return `<span class="badge bg-primary">LEADS</span>`
+                        return `<strong>` + data.balance + `</strong><br><span class="badge bg-primary">LEADS</span>`
                     }
                 }
-            }, {
-                "target": [<?= $target ?>],
-                "className": 'text-center py-1',
-                "data": "data.balance"
             }, {
                 "target": [<?= $target ?>],
                 "className": 'text-center py-1',

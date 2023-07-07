@@ -92,6 +92,7 @@
                                         <th>PPN</th>
                                         <th>Faktur</th>
                                         <th>Payment</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -136,7 +137,7 @@
                             </div><!--end col-->
                             <div class="col-xxl-6">
                                 <div>
-                                    <label for="remark" class="form-label">Pilih file PDF</label>
+                                    <label for="file_upload_invoice" class="form-label">Pilih file PDF</label>
                                     <input id="file_upload_invoice" type="file" class="form-control">
                                 </div>
                             </div><!--end col-->
@@ -203,6 +204,35 @@
                                     <label for="file_upload_bayar" class="form-label">Pilih PDF File Bukti Bayar Pajak</label>
                                     <input id="file_upload_bayar" type="file" class="form-control">
                                     <input type="hidden" class="form-control" id="id_upload_bayar">
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-12">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uploadinvoice" tabindex="-1" role="dialog" aria-labelledby="uploadinvoiceLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadinvoiceLabel">Upload Data</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="form-data-5">
+                        <div class="row g-3">
+                            <div class="col-xxl-12">
+                                <div>
+                                    <label for="file_upload_invoice2" class="form-label">Pilih PDF Invoice</label>
+                                    <input id="file_upload_invoice2" type="file" class="form-control">
+                                    <input type="hidden" class="form-control" id="id_upload_invoice2">
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
@@ -387,7 +417,13 @@
                 "className": 'text-center py-1',
                 "data": "data",
                 "render": function(data) {
-                    return data.invoice_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showinvoice('` + data.invoice_file + `')"><i class="fa fa-file-pdf"></i> invoice</button>`
+                    if (data.invoice_file == '') {
+
+                        return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadinvoice('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
+                    } else {
+                        return data.invoice_number + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showinvoice('` + data.invoice_file + `')"><i class="fa fa-file-pdf"></i> invoice</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','invoice')"><i class="fa fa-sync-alt"></i></button>`
+
+                    }
                 }
             }, {
                 "target": [<?= $target ?>],
@@ -405,7 +441,7 @@
                     if (data.bukti_bayar_pajak == '') {
                         return data.ppn + `<br><span class="badge rounded-pill bg-primary">NTPN-` + data.ntpn + `</span><br class="mb-1"><small style="color: red;font-style: italic;">*Bukti bayar Pajak-File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadbayar('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return data.ppn + `<br><span class="badge rounded-pill bg-primary">NTPN-` + data.ntpn + `</span><br class="mb-1"><button type="button" class="btn btn-sm btn-danger" onclick="showbayar('` + data.bukti_bayar_pajak + `')"><i class="fa fa-file-pdf"></i> Bukti Bayar</button>`
+                        return data.ppn + `<br><span class="badge rounded-pill bg-primary">NTPN-` + data.ntpn + `</span><br class="mb-1"><button type="button" class="btn btn-sm btn-danger" onclick="showbayar('` + data.bukti_bayar_pajak + `')"><i class="fa fa-file-pdf"></i> Bukti Bayar</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','bayar_pajak')"><i class="fa fa-sync-alt"></i></button>`
                     }
                 }
             }, {
@@ -416,7 +452,7 @@
                     if (data.ppn_file == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadppn('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return data.faktur_pajak + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showfaktur('` + data.ppn_file + `')"><i class="fa fa-file-pdf"></i> Faktur</button>`
+                        return data.faktur_pajak + `<br><button type="button" class="btn btn-sm btn-danger" onclick="showfaktur('` + data.ppn_file + `')"><i class="fa fa-file-pdf"></i> Faktur</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','faktur')"><i class="fa fa-sync-alt"></i></button>`
                     }
                 }
             }, {
@@ -427,8 +463,20 @@
                     if (data.payment_file == '') {
                         return `<small style="color: red;font-style: italic;">*File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadpayment('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showpayment('` + data.payment_file + `')"><i class="fa fa-file-pdf"></i> Payment</button>`
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showpayment('` + data.payment_file + `')"><i class="fa fa-file-pdf"></i> Payment</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','payment')"><i class="fa fa-sync-alt"></i></button>`
                     }
+                }
+            }, {
+                "target": [<?= $target ?>],
+                "className": 'text-center py-1',
+                "data": "data",
+                "render": function(data) {
+                    if (data.payment_file != '' || data.bukti_bayar_pajak != '' || data.ppn_file != '') {
+                        return `-`
+                    } else {
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="delete_data('` + data.id + `')"><i class="fa fa-trash"></i> </button>`
+                    }
+
                 }
             }, ],
             "dom": '<"row" <"col-md-6" l><"col-md-6" f>>rt<"row" <"col-md-6" i><"col-md-6" p>>',
@@ -486,6 +534,43 @@
 
     function reload_table() {
         $('#table-project').DataTable().ajax.reload(null, false);
+    }
+
+    function resetfile(id, jenis) {
+        // alert(id, jenis)
+        Swal.fire({
+            title: 'Apakah Anda Yakin ?',
+            text: "Anda akan menghapus file, silahkan upload ulang!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus saja!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url() ?>prjt/reset_data',
+                    data: {
+                        id: id,
+                        jenis: jenis,
+                        table: "tbl_invoice"
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == "success") {
+                            Swal.fire(
+                                'Deleted!',
+                                'Data berhasil di hapus.',
+                                'success'
+                            )
+                            reload_table()
+                        } else
+                            toast('error', result.message)
+                    }
+                })
+            }
+        })
     }
 
     $("#form-data").submit(function(e) {
@@ -557,6 +642,42 @@
         })
     })
 
+    function delete_data(id) {
+
+        Swal.fire({
+            title: 'Apakah Anda Yakin ?',
+            text: "Data yang dihapus tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus saja!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url() ?>prjt/delete_data',
+                    data: {
+                        id: id,
+                        table: "tbl_invoice"
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == "success") {
+                            Swal.fire(
+                                'Deleted!',
+                                'Data berhasil di hapus.',
+                                'success'
+                            )
+                            reload_table()
+                        } else
+                            toast('error', result.message)
+                    }
+                })
+            }
+        })
+    }
+
     function uploadppn(id) {
         $('#id_upload').val(id)
         $('#kategori_upload').val('ppn')
@@ -575,6 +696,12 @@
         $('#id_upload_bayar').val(id)
 
         $('#uploadModalpajak').modal('show')
+    }
+
+    function uploadinvoice(id) {
+        $('#id_upload_invoice2').val(id)
+
+        $('#uploadinvoice').modal('show')
     }
 
     $("#form-data-2").submit(function(e) {
@@ -737,6 +864,57 @@
                     )
                     $('#uploadModalpajak').modal('hide');
                     $('#file_upload_bayar').val('')
+
+                    reload_table()
+
+                } else {
+                    Swal.fire(
+                        'error!',
+                        result.message,
+                        'error'
+                    )
+                }
+            },
+            error: function(err) {
+                Swal.fire(
+                    'error!',
+                    err.responseText,
+                    'error'
+                )
+            }
+        })
+    })
+
+    $("#form-data-5").submit(function(e) {
+        e.preventDefault()
+
+        var form_data = new FormData();
+        form_data.append('table', 'tbl_invoice');
+        form_data.append('id', $("#id_upload_invoice2").val());
+        if ($('#file_upload_invoice2').val() !== "") {
+            var file_data = $('#file_upload_invoice2').prop('files')[0];
+            form_data.append('file', file_data);
+        }
+
+        var url_ajax = '<?= base_url() ?>prjt/update_file_invoice'
+
+        $.ajax({
+            url: url_ajax,
+            type: "post",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            dataType: "json",
+            success: function(result) {
+                if (result.status == "success") {
+                    Swal.fire(
+                        'Success!',
+                        result.message,
+                        'success'
+                    )
+                    $('#uploadinvoice').modal('hide');
+                    $('#file_upload_invoice2').val('')
 
                     reload_table()
 

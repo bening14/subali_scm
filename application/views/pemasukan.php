@@ -50,7 +50,7 @@
                             </ol>
                         </div>
                         <div class="col-6 mt-5 text-right" style="text-align: right;">
-                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalCustomer"><i class="fa fa-plus"></i> Register SPT</button>
+                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalCustomer"><i class="fa fa-plus"></i> Input Pemasukan</button>
                         </div>
                     </div>
 
@@ -248,7 +248,7 @@
                     if (data.bukti_transaksi == '') {
                         return `<small style="color: red;font-style: italic;">*Pemasukan Lain-File harus PDF</small><br><button type="button" class="btn btn-sm btn-success" onclick="uploadpemasukan('` + data.id + `')"><i class="fa fa-file-upload"></i> Upload</button>`
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showpemasukan('` + data.bukti_transaksi + `')"><i class="fa fa-file-pdf"></i> Bukti Transaksi</button>`
+                        return `<button type="button" class="btn btn-sm btn-danger" onclick="showpemasukan('` + data.bukti_transaksi + `')"><i class="fa fa-file-pdf"></i> Bukti Transaksi</button>&nbsp;<button type="button" class="btn btn-sm btn-warning" onclick="resetfile('` + data.id + `','pemasukan')"><i class="fa fa-sync-alt"></i></button>`
                     }
                 }
             }, {
@@ -281,7 +281,42 @@
         $('#uploadpemasukan').modal('show')
     }
 
-
+    function resetfile(id, jenis) {
+        // alert(id, jenis)
+        Swal.fire({
+            title: 'Apakah Anda Yakin ?',
+            text: "Anda akan menghapus file, silahkan upload ulang!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus saja!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url() ?>fa/reset_data',
+                    data: {
+                        id: id,
+                        jenis: jenis,
+                        table: "tbl_pemasukan_lain"
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == "success") {
+                            Swal.fire(
+                                'Deleted!',
+                                'Data berhasil di hapus.',
+                                'success'
+                            )
+                            reload_table()
+                        } else
+                            toast('error', result.message)
+                    }
+                })
+            }
+        })
+    }
 
 
     $("#form-data").submit(function(e) {
