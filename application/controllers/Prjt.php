@@ -297,6 +297,7 @@ class Prjt extends CI_Controller
     {
         $table = $this->input->post("table");
         $id = $this->input->post("id");
+        $invoice_number = $this->input->post("invoice_number");
 
         // echo $id;
         // die;

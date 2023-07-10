@@ -230,9 +230,15 @@
                         <div class="row g-3">
                             <div class="col-xxl-12">
                                 <div>
+                                    <label for="invoice_number_2" class="form-label">Invoice number</label>
+                                    <input type="hidden" class="form-control" id="id_upload_invoice2">
+                                    <input type="text" class="form-control" id="invoice_number_2">
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-xxl-12">
+                                <div>
                                     <label for="file_upload_invoice2" class="form-label">Pilih PDF Invoice</label>
                                     <input id="file_upload_invoice2" type="file" class="form-control">
-                                    <input type="hidden" class="form-control" id="id_upload_invoice2">
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
@@ -891,6 +897,7 @@
         var form_data = new FormData();
         form_data.append('table', 'tbl_invoice');
         form_data.append('id', $("#id_upload_invoice2").val());
+        form_data.append('invoice_number', $("#invoice_number_2").val());
         if ($('#file_upload_invoice2').val() !== "") {
             var file_data = $('#file_upload_invoice2').prop('files')[0];
             form_data.append('file', file_data);
@@ -915,6 +922,7 @@
                     )
                     $('#uploadinvoice').modal('hide');
                     $('#file_upload_invoice2').val('')
+                    $('#invoice_number_2').val('')
 
                     reload_table()
 

@@ -29,6 +29,20 @@ class Hr extends CI_Controller
         $this->load->view('karyawan_detil', $data);
     }
 
+    public function overtime()
+    {
+        $data['menu'] = 'hr';
+
+        $this->load->view('overtime', $data);
+    }
+
+    public function payroll()
+    {
+        $data['menu'] = 'hr';
+
+        $this->load->view('payroll', $data);
+    }
+
     public function absensi()
     {
         $data['menu'] = 'hr';
@@ -78,6 +92,79 @@ class Hr extends CI_Controller
         echo json_encode($output);
     }
 
+    public function ajax_table_overtime()
+    {
+        $table = 'tbl_overtime'; //nama tabel dari database
+        $column_order = array('id', 'nama_karyawan', 'nik', 'jabatan', 'uraian_pekerjaan', 'awal', 'akhir', 'lama_lembur', 'approval'); //field yang ada di table user
+        $column_search = array('id', 'nama_karyawan', 'nik', 'jabatan', 'uraian_pekerjaan', 'awal', 'akhir', 'lama_lembur', 'approval'); //field yang diizin untuk pencarian 
+        $select = 'id, nama_karyawan, nik, jabatan, uraian_pekerjaan, awal, akhir, lama_lembur, approval';
+        $order = array('id' => 'asc'); // default order 
+        $list = $this->crud->get_datatables($table, $select, $column_order, $column_search, $order);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $key) {
+            $no++;
+            $row = array();
+            $row['data']['no'] = $no;
+            $row['data']['id'] = $key->id;
+            $row['data']['nama_karyawan'] = $key->nama_karyawan;
+            $row['data']['nik'] = $key->nik;
+            $row['data']['jabatan'] = $key->jabatan;
+            $row['data']['uraian_pekerjaan'] = $key->uraian_pekerjaan;
+            $row['data']['awal'] = date('d-M-Y H:i:s', strtotime($key->awal));
+            $row['data']['akhir'] = date('d-M-Y H:i:s', strtotime($key->akhir));
+            $row['data']['lama_lembur'] = $key->lama_lembur;
+            $row['data']['approval'] = $key->approval;
+
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->crud->count_all($table),
+            "recordsFiltered" => $this->crud->count_filtered($table, $select, $column_order, $column_search, $order),
+            "data" => $data,
+            "query" => $this->db->last_query()
+        );
+        //output to json format
+        echo json_encode($output);
+    }
+
+    public function ajax_table_komponen()
+    {
+        $table = 'tbl_komponen_gaji'; //nama tabel dari database
+        $column_order = array('id', 'nama_karyawan', 'nik', 'jabatan', 'gaji_pokok', 'tunjangan_jabatan', 'tunjangan_kos'); //field yang ada di table user
+        $column_search = array('id', 'nama_karyawan', 'nik', 'jabatan', 'gaji_pokok', 'awal', 'tunjangan_kos'); //field yang diizin untuk pencarian 
+        $select = 'id, nama_karyawan, nik, jabatan, gaji_pokok, tunjangan_jabatan, tunjangan_kos';
+        $order = array('id' => 'asc'); // default order 
+        $list = $this->crud->get_datatables($table, $select, $column_order, $column_search, $order);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $key) {
+            $no++;
+            $row = array();
+            $row['data']['no'] = $no;
+            $row['data']['id'] = $key->id;
+            $row['data']['nama_karyawan'] = $key->nama_karyawan;
+            $row['data']['nik'] = $key->nik;
+            $row['data']['jabatan'] = $key->jabatan;
+            $row['data']['gaji_pokok'] = $key->gaji_pokok;
+            $row['data']['tunjangan_jabatan'] = $key->tunjangan_jabatan;
+            $row['data']['tunjangan_kos'] = $key->tunjangan_kos;
+
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->crud->count_all($table),
+            "recordsFiltered" => $this->crud->count_filtered($table, $select, $column_order, $column_search, $order),
+            "data" => $data,
+            "query" => $this->db->last_query()
+        );
+        //output to json format
+        echo json_encode($output);
+    }
     public function update_setting_gambar()
     {
         $table = $this->input->post("table");
@@ -187,5 +274,93 @@ class Hr extends CI_Controller
             $response = ['status' => 'error', 'message' => 'Gagal Tambah Data!'];
 
         echo json_encode($response);
+    }
+
+    public function getkaryawan()
+    {
+        $name = $this->input->post('name');
+
+        $where = array(
+            'name' => $name
+        );
+
+        $result = $this->crud->get_where('user', $where)->row_array();
+        echo json_encode($result);
+    }
+
+    public function insert_data_overtime()
+    {
+        $table = $this->input->post("table");
+        $a = $this->input->post("awal");
+        $b = $this->input->post("akhir");
+        $tanggal = $this->input->post("tanggal");
+        $data = $this->input->post();
+        unset($data['table']);
+        unset($data['awal']);
+        unset($data['akhir']);
+        unset($data['tanggal']);
+
+        $data['awal'] = $tanggal . ' ' . $a . ':00';
+        $data['akhir'] = $tanggal . ' ' . $b . ':00';
+        $data['approval'] = 'WAITING';
+
+        //hitung durasi
+        $waktu_awal        = strtotime($data['awal']);
+        $waktu_akhir    = strtotime($data['akhir']);
+        $diff    = $waktu_akhir - $waktu_awal;
+        $data['lama_lembur']    = floor($diff / (60 * 60));
+        $data['biaya'] = $data['lama_lembur'] * 30000;
+
+
+        $insert = $this->crud->insert($table, $data);
+
+        if ($insert > 0) {
+            $response = ['status' => 'success', 'message' => 'Berhasil Tambah Data!'];
+        } else
+            $response = ['status' => 'error', 'message' => 'Gagal Tambah Data!'];
+
+        echo json_encode($response);
+    }
+
+    function approvalovertime()
+    {
+        $id = $this->input->post('id');
+        $table = $this->input->post('table');
+        $decision = $this->input->post('decision');
+
+        if ($decision == 'APPROVED') {
+            $data = array(
+                'approval' => "APPROVED"
+            );
+        } elseif ($decision == "REJECT") {
+            $data = array(
+                'approval' => "REJECT"
+            );
+        }
+
+
+        $update = $this->crud->update($table, $data, ['id' => $id]);
+
+        if ($update) {
+            $response = ['status' => 'success', 'message' => 'Success Updated Data!'];
+        } else
+            $response = ['status' => 'failed', 'message' => 'Error Updated Data!'];
+
+        echo json_encode($response);
+    }
+
+    function update_data_komponen()
+    {
+        $id = $this->input->post('id');
+        $gaji_pokok = $this->input->post('gaji_pokok');
+        $tunjangan_jabatan = $this->input->post('tunjangan_jabatan');
+        $tunjangan_kos = $this->input->post('tunjangan_kos');
+
+        echo $id . '<br>';
+        echo $gaji_pokok . '<br>';
+        echo $tunjangan_jabatan . '<br>';
+        echo $tunjangan_kos . '<br>';;
+
+        die;
     }
 }
