@@ -339,7 +339,7 @@
                 "className": 'text-center py-1',
                 "data": "data",
                 "render": function(data) {
-                    return `<strong>` + data.nama_project + `<strong><br><strong>.:. </strong>&nbsp;` + data.uraian
+                    return `<strong>` + data.nama_project + `</strong><br><strong>.:. </strong>&nbsp;` + data.uraian
                     // return data.nama_project + `<br><button type="button" class="btn btn-sm btn-primary" onclick="showinfo('` + data.id + `')"><i class="fa fa-book"></i> info</button>`
                 }
             }, {
